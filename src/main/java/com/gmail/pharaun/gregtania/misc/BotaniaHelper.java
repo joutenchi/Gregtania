@@ -21,6 +21,7 @@ import static com.gmail.pharaun.gregtania.misc.OrechidYieldConfig.oreWeightOverw
 
 // Credit - Botania - BotaniaAPI
 public class BotaniaHelper {
+
     // The ore weights sorted by tiers and dimensions
     public static Map<Integer, Map<String, Integer>> tieredOreWeightOverworld;
     public static Map<Integer, Map<String, Integer>> tieredOreWeightNether;
@@ -47,7 +48,8 @@ public class BotaniaHelper {
     }
 
     /**
-     * Sanity Check to prevent Crash, if there is missing ores in various tiers, insert oreCoal
+     * Sanity Check to prevent Crash, if there is missing ores in various tiers,
+     * insert oreCoal
      */
     private static Map<Integer, Map<String, Integer>> sanityCheck(Map<Integer, Map<String, Integer>> tieredOreWeight, int lower, int upper) {
         Map<Integer, Map<String, Integer>> ret = new Hashtable<>();
@@ -55,7 +57,7 @@ public class BotaniaHelper {
         Map<String, Integer> dummy = new Hashtable<>();
         dummy.put("oreCoal", 9999999);
 
-        for(int i = lower; i <= upper; i++) {
+        for (int i = lower; i <= upper; i++) {
             ret.put(i, tieredOreWeight.getOrDefault(i, dummy));
         }
 
@@ -88,8 +90,8 @@ public class BotaniaHelper {
     }
 
     /**
-     * Iterates through the weighted ore maps and attempt to find the hardness of each entry to populate
-     * the tiered weighted ore maps.
+     * Iterates through the weighted ore maps and attempt to find the hardness
+     * of each entry to populate the tiered weighted ore maps.
      */
     private static Map<Integer, Map<String, Integer>> initTieredOreWeight(Map<String, Integer> oreWeight) {
         Map<Integer, Map<String, Integer>> ret = new Hashtable<>();
@@ -102,7 +104,8 @@ public class BotaniaHelper {
                 continue;
             }
 
-            found : {
+            found:
+            {
                 // Search specifically for a Gregtech ore first, then fallback
                 for (ItemStack stack : ores) {
                     String className = stack.getItem().getClass().getName();
@@ -157,28 +160,29 @@ public class BotaniaHelper {
     }
 
     /**
-     * Since Gregtech 5.09.27(ish) and before used one way of handling this, and 5.09.27(ish) and after uses another way
-     * of handling this: https://github.com/Blood-Asp/GT5-Unofficial/commit/d51f43f97bfdda3bf7b024d141225e249cdc36bf#diff-c5b626909eed3bb83cf6340aadef8f1b
+     * Since Gregtech 5.09.27(ish) and before used one way of handling this, and
+     * 5.09.27(ish) and after uses another way of handling this:
+     * https://github.com/Blood-Asp/GT5-Unofficial/commit/d51f43f97bfdda3bf7b024d141225e249cdc36bf#diff-c5b626909eed3bb83cf6340aadef8f1b
      *
      * This method is for handling... this
      */
     public static int acquireHarvestData(Block block, int meta) {
         // getHarvestData(short) - or - getHarvestData(short, int)
-        if(oldMethod == null) {
+        if (oldMethod == null) {
             // Identify which one to use
             Class<?> c = GT_TileEntity_Ores.class;
             try {
                 // Try new first
-                cachedMethod = c.getDeclaredMethod ("getHarvestData", short.class);
+                cachedMethod = c.getDeclaredMethod("getHarvestData", short.class);
                 oldMethod = Boolean.TRUE;
             } catch (NoSuchMethodException e) {
                 oldMethod = Boolean.FALSE;
             }
         }
 
-        if(oldMethod.booleanValue()) {
+        if (oldMethod.booleanValue()) {
             try {
-                Byte harvestData = (Byte)cachedMethod.invoke(GT_Block_Ores.class, (short)meta);
+                Byte harvestData = (Byte) cachedMethod.invoke(GT_Block_Ores.class, (short) meta);
                 return harvestData.intValue();
             } catch (Exception e) {
                 throw (new RuntimeException(e));
