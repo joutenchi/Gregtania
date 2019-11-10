@@ -80,7 +80,7 @@ public abstract class SubTileAbstractEvolvedOrechid extends SubTileFunctional {
 
                     // Check if its a gregtech ore
                     String clname = stack.getItem().getClass().getName();
-                    if (notGregOre.contains(clname)) {
+                    if (!notGregOre.contains(clname)) {
                         int harvestData = acquireHarvestData(block, meta);
                         supertile.getWorldObj().setBlock(coords.posX, coords.posY, coords.posZ, block, harvestData, 3);
 

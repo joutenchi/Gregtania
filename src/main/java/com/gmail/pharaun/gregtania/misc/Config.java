@@ -62,7 +62,7 @@ public class Config {
         property.comment = "Stones in range can be replaced.";
         range = property.getInt();
 
-        property = config.get(Configuration.CATEGORY_GENERAL, "COST", 3);
+        property = config.get(Configuration.CATEGORY_GENERAL, "range_y", 3);
         property.comment = "Stones in range can be replaced.";
         range_y = property.getInt();
 

@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.gmail.pharaun.gregtania.misc.BotaniaHelper.acquireHarvestData;
 
 public class DebugSpawnListCommand implements ICommand {
+
     @Override
     public String getCommandName() {
         return "debugOrechidSpawn";
@@ -43,11 +44,11 @@ public class DebugSpawnListCommand implements ICommand {
         World world = sender.getEntityWorld();
 
         if (!world.isRemote) {
-            if(Config.stackedOreInTiers) {
+            if (Config.stackedOreInTiers) {
                 // Just need to test the last tier of the 3 orechids
                 processOrechid(sender, BotaniaHelper.tieredOreWeightOverworld, "Overworld", 3, 3);
                 processOrechid(sender, BotaniaHelper.tieredOreWeightNether, "Nether", 3, 3);
-                processOrechid(sender, BotaniaHelper.tieredOreWeightEnd, "End",4, 4);
+                processOrechid(sender, BotaniaHelper.tieredOreWeightEnd, "End", 4, 4);
 
             } else {
                 // Test stuff in each tier for each orechid
@@ -60,11 +61,11 @@ public class DebugSpawnListCommand implements ICommand {
 
     private void processOrechid(ICommandSender sender, Map<Integer, Map<String, Integer>> tieredOreWeight, String dimension, int lower, int upper) {
         sender.addChatMessage(new ChatComponentText("Orechid: " + dimension));
-        for(int i = lower; i <= upper; i++) {
+        for (int i = lower; i <= upper; i++) {
             Map<String, Integer> tier = tieredOreWeight.get(i);
 
-            if(tier != null) {
-                if(lower != upper) {
+            if (tier != null) {
+                if (lower != upper) {
                     sender.addChatMessage(new ChatComponentText("  Tier: " + i));
                 }
 
@@ -72,7 +73,7 @@ public class DebugSpawnListCommand implements ICommand {
                     // Grab a list of ores itemstack
                     List<ItemStack> ores = OreDictionary.getOres(oredict);
 
-                    if(ores.isEmpty()) {
+                    if (ores.isEmpty()) {
                         sender.addChatMessage(new ChatComponentText("    " + oredict + " - Empty"));
                         continue;
                     }
@@ -80,17 +81,17 @@ public class DebugSpawnListCommand implements ICommand {
                     // Search for gregtech ores and if one doesn't exist emit that it doesnt
                     ItemStack match = null;
 
-                    for(ItemStack stack : ores) {
+                    for (ItemStack stack : ores) {
                         Item item = stack.getItem();
                         String clname = item.getClass().getName();
 
-                        if(clname.startsWith("gregtech") || clname.startsWith("gregapi")) {
+                        if (clname.startsWith("gregtech") || clname.startsWith("gregapi")) {
                             // Set match
                             match = stack;
                         }
                     }
 
-                    if(match == null) {
+                    if (match == null) {
                         sender.addChatMessage(new ChatComponentText("    " + oredict + " - No Gregtech Ore Equiv"));
                     } else {
                         // Gregtech, let's validate it
@@ -125,7 +126,7 @@ public class DebugSpawnListCommand implements ICommand {
     }
 
     @Override
-    public int compareTo(@NotNull Object o) {
+    public int compareTo(Object o) {
         return 0;
     }
 }
